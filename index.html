@@ -243,6 +243,21 @@ body.ir-dark .report-page .dynamic-table td,
 .report-page .dynamic-table td{font-weight:400 !important;}
 .report-page .sig-wrap img{max-height:58px !important;max-width:260px !important;}
 /* ===== end V8 fix ===== */
+
+/* ===== V10 reset button + report completion bar - UI only ===== */
+.top-tools{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin:12px 0 14px;padding:12px;border:1px solid rgba(245,158,11,.28);border-radius:16px;background:linear-gradient(135deg,#ffffff,#fff7ed);box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.completion-box{min-width:0}
+.completion-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:7px;font-size:13px;font-weight:900;color:#9a3412}
+.completion-track{height:9px;border-radius:999px;background:#ffedd5;overflow:hidden;border:1px solid rgba(245,158,11,.20)}
+.completion-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#f59e0b,#ea580c);transition:width .22s ease}
+.reset-btn{border:1px solid rgba(239,68,68,.28);border-radius:12px;min-height:42px;padding:10px 14px;background:#fff1f2;color:#991b1b;font-weight:900;cursor:pointer;white-space:nowrap}
+.reset-btn:hover{filter:brightness(.98)}
+body.ir-dark .top-tools{background:linear-gradient(135deg,#111827,#1f2937);border-color:rgba(245,158,11,.40);box-shadow:0 10px 24px rgba(0,0,0,.22)}
+body.ir-dark .completion-head{color:#fed7aa}
+body.ir-dark .completion-track{background:#431407;border-color:rgba(245,158,11,.30)}
+body.ir-dark .reset-btn{background:#2b0b0b;color:#fecaca;border-color:rgba(248,113,113,.35)}
+@media(max-width:700px){.top-tools{grid-template-columns:1fr}.reset-btn{width:100%}}
+/* ===== end V10 reset button + report completion bar ===== */
 </style>
 </head>
 <body>
@@ -250,6 +265,19 @@ body.ir-dark .report-page .dynamic-table td,
   <div class="panel input-panel">
     <h1>Installation Report Builder <span style="font-size:15px;color:#64748b">/ مُنشئ تقرير التركيب</span></h1>
     <p class="note">صفحة الإدخال تحتوي على ترجمة عربية وأمثلة للتوضيح فقط. ملف الـ PDF النهائي يبقى إنجليزي بالكامل، والقالب الأصلي لا يتغير.</p>
+
+
+
+    <div class="top-tools" aria-label="Report completion and reset">
+      <div class="completion-box">
+        <div class="completion-head">
+          <span>اكتمال التقرير / Report Completion</span>
+          <span id="completionPercent">0%</span>
+        </div>
+        <div class="completion-track"><div class="completion-fill" id="completionFill"></div></div>
+      </div>
+      <button class="reset-btn" type="button" onclick="resetReportForm()">↻ تجديد / Reset</button>
+    </div>
 
     <div class="themebar" aria-label="Theme controls">
       <div class="themebar-title">وضع العرض / Display Mode<br><span style="font-weight:800;color:inherit">هذا التغيير للواجهة فقط، ولا يغير شكل الـ PDF.</span></div>
@@ -564,6 +592,7 @@ function updateReport(){
   $('outRemarks').textContent = $('remarksInput').value;
   fitRemarks();
   const eng=$('fieldEngineerInput').value; $('outFieldEngineerName').textContent=eng; const img=$('outFieldEngineerSign'); if(eng && ENGINEER_SIGNATURES[eng]){img.src=ENGINEER_SIGNATURES[eng]; img.style.display='block';} else {img.removeAttribute('src'); img.style.display='none';}
+  updateCompletionBar();
 }
 async function createPdfBlob(){
   updateReport();
@@ -631,6 +660,83 @@ function goWizardStep(step){
 }
 function nextWizardStep(){ goWizardStep(currentWizardStep + 1); }
 function prevWizardStep(){ goWizardStep(currentWizardStep - 1); }
+
+
+function getReportCompletionPercent(){
+  const checks = [];
+  const has = v => String(v ?? '').trim().length > 0;
+  const add = ok => checks.push(Boolean(ok));
+
+  // Basic information / المعلومات الأساسية
+  add(has($('clientInput').value) && has($('companyInput').value));
+  add(has($('reportDateInput').value));
+  add(has($('companyManInput').value));
+  add(has($('espSupervisorInput').value));
+  add(has(normalizeHoistRig($('hoistRigInput').value).value));
+  add(has(normalizeWell($('wellInput').value)));
+  add(has($('arriveDateInput').value));
+  add(has($('jobStartInput').value));
+  add(has($('jobEndInput').value));
+
+  // BIW Part table / جدول القطع
+  const activeParts = partRows.filter(r => has(r.catalogIndex));
+  add(activeParts.length > 0);
+  activeParts.forEach(r => {
+    const item = CATALOG[Number(r.catalogIndex)];
+    add(Boolean(item));
+    add(!item || item.serialRequired === false ? true : has(normalizeSerial(r.serial)));
+    add(has(r.install));
+    add(has(normalizeYesNo(r.reused)));
+  });
+
+  // Cable / الكيبل
+  add(has($('mleSizeInput').value));
+  add(has($('mainSizeInput').value));
+  add(has($('mainLengthInput').value));
+  add(has($('mainReusedInput').value));
+
+  // Electrical test / الفحص الكهربائي
+  elecRows.forEach(r => {
+    const hasTime = has(normalizeTime(r.time));
+    add(hasTime);
+    if(hasTime) add(has(r.phph));
+  });
+
+  // Wellhead / ESP / رأس البئر و ESP
+  add(has($('casingInput').value));
+  add(has($('tubingInput').value));
+  add(has($('wellDepthInput').value));
+  add(has($('espManufacturerInput').value));
+
+  // Finish / النهاية
+  add(has($('fieldEngineerInput').value));
+
+  if(!checks.length) return 0;
+  return Math.round((checks.filter(Boolean).length / checks.length) * 100);
+}
+function updateCompletionBar(){
+  const percent = getReportCompletionPercent();
+  const fill = document.getElementById('completionFill');
+  const label = document.getElementById('completionPercent');
+  if(fill) fill.style.width = percent + '%';
+  if(label) label.textContent = percent + '%';
+}
+function resetReportForm(){
+  const ok = confirm('هل تريد مسح كل البيانات والبدء من جديد؟\nReset all fields and start again?');
+  if(!ok) return;
+  document.querySelectorAll('.input-panel input, .input-panel select, .input-panel textarea').forEach(el => {
+    if(el.type === 'button' || el.type === 'submit') return;
+    el.value = '';
+  });
+  partRows = [blankPartRow()];
+  elecRows = ELECTRICAL_ROWS.map(name => ({name, time:'', phph:'', phg:''}));
+  renderPartsEditor();
+  renderElectricalEditor();
+  goWizardStep(0);
+  updateReport();
+  const status = document.getElementById('status');
+  if(status) status.textContent = 'تم مسح البيانات. Ready for new report.';
+}
 
 function pdfName(){const w=normalizeWell($('wellInput').value); return (w || 'Installation_Report') + '.pdf';}
 async function downloadPDF(){try{ $('status').textContent='Creating PDF...'; const blob=await createPdfBlob(); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=pdfName(); document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); $('status').textContent='PDF ready.'; }catch(e){$('status').textContent=e.message || String(e);}}
