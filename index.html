@@ -92,6 +92,141 @@ body.ir-dark .report-page,
 body.ir-dark .report-page *{color:inherit}
 /* ===== end UI theme toggle ===== */
 
+
+
+/* ===== V7 WIZARD UI - INPUT ONLY, PDF UNCHANGED ===== */
+.app{max-width:900px}
+.input-panel{padding:18px}
+.wizard-head{margin:14px 0 16px;padding:14px;border:1px solid rgba(245,158,11,.35);border-radius:18px;background:linear-gradient(135deg,#fff7ed,#ffffff);box-shadow:0 8px 22px rgba(245,158,11,.09)}
+.wizard-topline{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.wizard-title{font-weight:900;color:#9a3412;font-size:14px;line-height:1.35}
+.wizard-count{font-weight:900;color:#0f172a;background:#fff;border:1px solid rgba(245,158,11,.35);border-radius:999px;padding:7px 10px;font-size:12px;white-space:nowrap}
+.wizard-progress{height:8px;border-radius:999px;background:#ffedd5;overflow:hidden;margin-bottom:12px}
+.wizard-progress-fill{height:100%;width:16.66%;background:linear-gradient(90deg,#f59e0b,#ea580c);border-radius:999px;transition:width .22s ease}
+.wizard-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+.wizard-tab{border:1px solid #fed7aa;background:#fff;color:#334155;border-radius:999px;padding:9px 12px;min-height:38px;font-size:12px;font-weight:900;white-space:nowrap;cursor:pointer}
+.wizard-tab.active{background:linear-gradient(135deg,#f59e0b,#ea580c);border-color:#f59e0b;color:#111827}
+.wizard-step{display:none!important;margin:0!important}
+.wizard-step.active{display:block!important;animation:wizardFade .18s ease}
+@keyframes wizardFade{from{opacity:.2;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.wizard-controls{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0}
+.wizard-controls .left,.wizard-controls .right{display:flex;gap:8px;flex-wrap:wrap}
+.pdf-actions{display:none!important}
+.pdf-actions.active{display:flex!important}
+body.ir-dark .wizard-head{background:linear-gradient(135deg,#111827,#1f2937);border-color:rgba(245,158,11,.45);box-shadow:0 10px 26px rgba(0,0,0,.28)}
+body.ir-dark .wizard-title{color:#fed7aa}
+body.ir-dark .wizard-count{background:#020617;color:#f8fafc;border-color:rgba(245,158,11,.35)}
+body.ir-dark .wizard-progress{background:#431407}
+body.ir-dark .wizard-tab{background:#020617;color:#e5e7eb;border-color:#475569}
+body.ir-dark .wizard-tab.active{background:linear-gradient(135deg,#f59e0b,#fb923c);color:#111827;border-color:#f59e0b}
+body.ir-dark .wizard-controls{border-top-color:#334155}
+@media(max-width:850px){.app{max-width:100%;padding:10px}.input-panel{padding:14px}.wizard-topline{align-items:flex-start;flex-direction:column}.wizard-count{align-self:flex-start}.wizard-controls{position:sticky;bottom:0;background:rgba(255,255,255,.96);z-index:20;padding:10px;border-radius:14px;border:1px solid #e2e8f0;box-shadow:0 -6px 18px rgba(15,23,42,.08)}body.ir-dark .wizard-controls{background:rgba(15,23,42,.96);border-color:#334155}}
+/* ===== end V7 wizard UI ===== */
+
+/* ===== V5 FIX: KEEP PDF TEMPLATE HIDDEN + PDF COLORS FIXED ===== */
+/* The report template is used only for Download/Share PDF. It must not appear in the mobile page. */
+.preview-wrap{
+  position:fixed !important;
+  left:-20000px !important;
+  top:0 !important;
+  width:1414px !important;
+  height:2000px !important;
+  overflow:hidden !important;
+  padding:0 !important;
+  margin:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:#fff !important;
+  pointer-events:none !important;
+}
+.report-page,
+.report-page *{
+  color:#102033 !important;
+}
+.report-page{
+  background:#fff !important;
+  transform:none !important;
+}
+.report-page img.template{
+  filter:none !important;
+  opacity:1 !important;
+}
+.report-page .cover{
+  background:#fff !important;
+}
+.report-page .dynamic-table,
+.report-page .dynamic-table td{
+  background:#fff !important;
+  color:#102033 !important;
+  border-color:#111 !important;
+}
+.report-page .out,
+.report-page .remarks-text,
+.report-page .sig-wrap{
+  color:#102033 !important;
+}
+/* Dark mode is for input UI only. It must never affect the hidden PDF template. */
+body.ir-dark .report-page,
+body.ir-dark .report-page *,
+body.ir-dark .dynamic-table,
+body.ir-dark .dynamic-table td,
+body.ir-dark .out,
+body.ir-dark .remarks-text,
+body.ir-dark .sig-wrap{
+  color:#102033 !important;
+  background-color:transparent;
+}
+body.ir-dark .report-page .cover,
+body.ir-dark .report-page .dynamic-table,
+body.ir-dark .report-page .dynamic-table td{
+  background:#fff !important;
+}
+/* ===== end V5 fix ===== */
+
+
+
+/* ===== V6 HARD FIX: PDF TEMPLATE NEVER APPEARS IN UI ===== */
+/* Hidden by default. It is temporarily enabled off-screen only while creating PDF. */
+.preview-wrap{
+  display:none !important;
+  position:fixed !important;
+  left:-30000px !important;
+  top:0 !important;
+  width:1414px !important;
+  height:2000px !important;
+  overflow:hidden !important;
+  padding:0 !important;
+  margin:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:#fff !important;
+  pointer-events:none !important;
+}
+body.generating-pdf .preview-wrap{
+  display:block !important;
+}
+body.ir-dark .report-page,
+body.ir-dark .report-page *,
+.report-page,
+.report-page *{
+  color:#102033 !important;
+}
+body.ir-dark .report-page,
+.report-page{
+  background:#fff !important;
+}
+body.ir-dark .report-page .cover,
+.report-page .cover,
+body.ir-dark .report-page .dynamic-table,
+.report-page .dynamic-table,
+body.ir-dark .report-page .dynamic-table td,
+.report-page .dynamic-table td{
+  background:#fff !important;
+  color:#102033 !important;
+  border-color:#111 !important;
+}
+/* ===== end V6 hard fix ===== */
+
 </style>
 </head>
 <body>
@@ -108,7 +243,23 @@ body.ir-dark .report-page *{color:inherit}
       </div>
     </div>
 
-    <div class="section"><h2>1) Basic Information <span class="ar">/ المعلومات الأساسية</span></h2>
+    <div class="wizard-head" aria-label="Report steps">
+      <div class="wizard-topline">
+        <div class="wizard-title" id="wizardTitle">Step 1 of 6 — Job Info / المعلومات الأساسية</div>
+        <div class="wizard-count" id="wizardCount">1 / 6</div>
+      </div>
+      <div class="wizard-progress"><div class="wizard-progress-fill" id="wizardProgressFill"></div></div>
+      <div class="wizard-tabs" id="wizardTabs">
+        <button class="wizard-tab active" type="button" onclick="goWizardStep(0)">1 Job Info</button>
+        <button class="wizard-tab" type="button" onclick="goWizardStep(1)">2 Parts</button>
+        <button class="wizard-tab" type="button" onclick="goWizardStep(2)">3 Cable</button>
+        <button class="wizard-tab" type="button" onclick="goWizardStep(3)">4 Electrical</button>
+        <button class="wizard-tab" type="button" onclick="goWizardStep(4)">5 Well / ESP</button>
+        <button class="wizard-tab" type="button" onclick="goWizardStep(5)">6 Finish</button>
+      </div>
+    </div>
+
+    <div class="section wizard-step active" data-step="0"><h2>1) Basic Information <span class="ar">/ المعلومات الأساسية</span></h2>
       <div class="grid">
         <div class="field"><label>Client / العميل</label><select id="clientInput"><option value="">Select / اختر</option><option>PDO</option><option>OQ</option><option>OXY</option><option>Daleel</option><option>Petrogas</option><option>ARA</option><option>BP</option><option>Halliburton</option></select><div class="ar-tip">اختر العميل أولًا. <span class="example">مثال في PDF: PDO / SLB</span></div></div>
         <div class="field"><label>Company / الشركة</label><select id="companyInput"><option value="">Select / اختر</option><option>SLB</option><option>Baker Hughes</option><option>Levare</option><option>Al Khorayef</option><option>Halliburton</option></select><div class="ar-tip">اختر الشركة؛ ستظهر مع العميل في خانة Customer.</div></div>
@@ -123,13 +274,13 @@ body.ir-dark .report-page *{color:inherit}
       </div>
     </div>
 
-    <div class="section"><h2>2) BIW Part Number Table <span class="ar">/ جدول قطع BIW</span></h2>
+    <div class="section wizard-step" data-step="1"><h2>2) BIW Part Number Table <span class="ar">/ جدول قطع BIW</span></h2>
       <div class="ar-tip" style="margin-bottom:10px">اختر Description من القائمة عشان تعرف القطعة، لكن في الـ PDF يظهر Part Number فقط. العدد اختياري؛ إذا تركته فاضي يعتبر 1 ولا يظهر بجانب البارت نمبر.</div>
       <div id="partsEditor"></div>
       <div class="actions"><button class="btn btn-secondary" type="button" onclick="addPartRow()">+ Add Part Number / إضافة قطعة</button></div>
     </div>
 
-    <div class="section"><h2>3) Cable <span class="ar">/ الكيبل</span></h2>
+    <div class="section wizard-step" data-step="2"><h2>3) Cable <span class="ar">/ الكيبل</span></h2>
       <div class="grid">
         <div class="field"><label>MLE Size (AWG) / مقاس MLE</label><select id="mleSizeInput"><option value=""></option><option>4</option><option>5</option><option>6</option></select><div class="ar-tip">اختياري من القائمة.</div></div>
         <div class="field"><label>MLE Flat / شكل MLE</label><select id="mleFlatInput"><option value=""></option><option>Flat</option></select><div class="ar-tip">اختياري؛ المتاح Flat فقط.</div></div>
@@ -139,12 +290,12 @@ body.ir-dark .report-page *{color:inherit}
       </div>
     </div>
 
-    <div class="section"><h2>4) Electrical Test <span class="ar">/ الفحص الكهربائي</span></h2>
+    <div class="section wizard-step" data-step="3"><h2>4) Electrical Test <span class="ar">/ الفحص الكهربائي</span></h2>
       <div id="electricalEditor"></div>
       <div class="small-help">اكتب الوقت مثل 3:30pm أو ٣:٣٠pm؛ سيظهر في PDF بصيغة 03:30 PM، وMegger Voltage يصبح 2000 تلقائيًا. خانة Ph-G تُستخدم مع السطر الذي فيه وقت، وإذا كتبت رقمًا ستظهر في PDF بصيغة MΩ مثل 1200MΩ.</div>
     </div>
 
-    <div class="section"><h2>5) Wellhead / Packer / ESP <span class="ar">/ رأس البئر والباكر و ESP</span></h2>
+    <div class="section wizard-step" data-step="4"><h2>5) Wellhead / Packer / ESP <span class="ar">/ رأس البئر والباكر و ESP</span></h2>
       <div class="grid">
         <div class="field"><label>Casing Size / مقاس الكيسنج</label><select id="casingInput"><option value=""></option><option value="7&quot;">7&quot;</option><option value="9frac">9 5/8&quot;</option></select><div class="ar-tip">اختياري؛ الكسر يظهر صغيرًا في PDF.</div></div>
         <div class="field"><label>Tubing Size / مقاس التيوبنج</label><select id="tubingInput"><option value=""></option><option value="3frac">3 1/2&quot;</option><option value="4frac">4 1/2&quot;</option><option value="5frac">5 1/2&quot;</option></select><div class="ar-tip">اختياري؛ الكسر يظهر صغيرًا في PDF.</div></div>
@@ -155,17 +306,25 @@ body.ir-dark .report-page *{color:inherit}
       </div>
     </div>
 
-    <div class="section"><h2>6) Remarks & Signatures <span class="ar">/ الملاحظات والتواقيع</span></h2>
+    <div class="section wizard-step" data-step="5"><h2>6) Remarks & Signatures <span class="ar">/ الملاحظات والتواقيع</span></h2>
       <div class="grid2">
         <div class="field"><label>Field Engineer / مهندس BIW</label><select id="fieldEngineerInput"><option value="">Select / اختر</option></select><div class="ar-tip">اختر المهندس؛ في PDF يظهر الاسم مع التوقيع بجانبه.</div></div>
         <div class="field"><label>Remarks / الملاحظات</label><textarea id="remarksInput" placeholder="Write remarks here / اكتب الملاحظات هنا"></textarea><div class="ar-tip">النص يبقى داخل بوكس Remarks فقط ويتم تصغيره تلقائيًا إذا طال.</div></div>
       </div>
     </div>
 
-    <div class="actions">
+    <div class="wizard-controls">
+      <div class="left">
+        <button class="btn btn-secondary" id="wizardBackBtn" type="button" onclick="prevWizardStep()">Back / السابق</button>
+      </div>
+      <div class="right">
+        <button class="btn btn-primary" id="wizardNextBtn" type="button" onclick="nextWizardStep()">Next / التالي</button>
+      </div>
+    </div>
+
+    <div class="actions pdf-actions" id="pdfActions">
       <button class="btn btn-primary" type="button" onclick="downloadPDF()">Download PDF / تنزيل PDF</button>
       <button class="btn btn-secondary" type="button" onclick="sharePDF()">Share PDF / مشاركة PDF</button>
-      <button class="btn btn-secondary" type="button" onclick="updateReport()">Update Preview / تحديث المعاينة</button>
     </div>
     <div id="status" class="status"></div>
   </div>
@@ -392,13 +551,23 @@ function updateReport(){
   const eng=$('fieldEngineerInput').value; $('outFieldEngineerName').textContent=eng; const img=$('outFieldEngineerSign'); if(eng && ENGINEER_SIGNATURES[eng]){img.src=ENGINEER_SIGNATURES[eng]; img.style.display='block';} else {img.removeAttribute('src'); img.style.display='none';}
 }
 async function createPdfBlob(){
-  updateReport(); const errs=validate(); if(errs.length) throw new Error(errs.join('\n'));
+  updateReport();
+  const errs=validate();
+  if(errs.length) throw new Error(errs.join('\n'));
   if(!window.html2canvas || !window.jspdf) throw new Error('PDF libraries are not loaded. Connect to internet once, then try again.');
-  const page=$('reportPage'); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-  const canvas=await html2canvas(page,{scale:1,useCORS:true,backgroundColor:'#ffffff',logging:false,width:1414,height:2000,windowWidth:1414,windowHeight:2000});
-  const img=canvas.toDataURL('image/png'); const {jsPDF}=window.jspdf; const pdf=new jsPDF({orientation:'portrait',unit:'pt',format:'a4',compress:true});
-  pdf.addImage(img,'PNG',0,0,595.28,841.89,undefined,'FAST');
-  return pdf.output('blob');
+  const page=$('reportPage');
+  document.body.classList.add('generating-pdf');
+  try{
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const canvas=await html2canvas(page,{scale:1,useCORS:true,backgroundColor:'#ffffff',logging:false,width:1414,height:2000,windowWidth:1414,windowHeight:2000,scrollX:0,scrollY:0});
+    const img=canvas.toDataURL('image/png');
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'portrait',unit:'pt',format:'a4',compress:true});
+    pdf.addImage(img,'PNG',0,0,595.28,841.89,undefined,'FAST');
+    return pdf.output('blob');
+  } finally {
+    document.body.classList.remove('generating-pdf');
+  }
 }
 
 function setUiTheme(mode){
@@ -416,12 +585,45 @@ function initUiTheme(){
   setUiTheme(saved === 'dark' ? 'dark' : 'light');
 }
 
+const WIZARD_STEPS = [
+  'Job Info / المعلومات الأساسية',
+  'BIW Parts / قطع BIW',
+  'Cable / الكيبل',
+  'Electrical Test / الفحص الكهربائي',
+  'Wellhead & ESP / رأس البئر و ESP',
+  'Remarks & Signatures / الملاحظات والتواقيع'
+];
+let currentWizardStep = 0;
+function goWizardStep(step){
+  currentWizardStep = Math.max(0, Math.min(WIZARD_STEPS.length-1, Number(step)||0));
+  document.querySelectorAll('.wizard-step').forEach((el,i)=>el.classList.toggle('active', i===currentWizardStep));
+  document.querySelectorAll('.wizard-tab').forEach((el,i)=>el.classList.toggle('active', i===currentWizardStep));
+  const title = document.getElementById('wizardTitle');
+  const count = document.getElementById('wizardCount');
+  const fill = document.getElementById('wizardProgressFill');
+  const back = document.getElementById('wizardBackBtn');
+  const next = document.getElementById('wizardNextBtn');
+  const pdfActions = document.getElementById('pdfActions');
+  if(title) title.textContent = `Step ${currentWizardStep+1} of ${WIZARD_STEPS.length} — ${WIZARD_STEPS[currentWizardStep]}`;
+  if(count) count.textContent = `${currentWizardStep+1} / ${WIZARD_STEPS.length}`;
+  if(fill) fill.style.width = (((currentWizardStep+1)/WIZARD_STEPS.length)*100) + '%';
+  if(back) back.disabled = currentWizardStep === 0;
+  if(next) next.textContent = currentWizardStep === WIZARD_STEPS.length-1 ? 'Review / مراجعة' : 'Next / التالي';
+  if(next) next.style.display = currentWizardStep === WIZARD_STEPS.length-1 ? 'none' : '';
+  if(pdfActions) pdfActions.classList.toggle('active', currentWizardStep === WIZARD_STEPS.length-1);
+  const panel = document.querySelector('.input-panel');
+  if(panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function nextWizardStep(){ goWizardStep(currentWizardStep + 1); }
+function prevWizardStep(){ goWizardStep(currentWizardStep - 1); }
+
 function pdfName(){const w=normalizeWell($('wellInput').value); return (w || 'Installation_Report') + '.pdf';}
 async function downloadPDF(){try{ $('status').textContent='Creating PDF...'; const blob=await createPdfBlob(); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=pdfName(); document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); $('status').textContent='PDF ready.'; }catch(e){$('status').textContent=e.message || String(e);}}
 async function sharePDF(){try{ $('status').textContent='Creating PDF...'; const blob=await createPdfBlob(); const file=new File([blob], pdfName(), {type:'application/pdf'}); if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:'Installation Report'}); $('status').textContent='Shared.'; } else { const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=pdfName(); document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); $('status').textContent='Share not supported; PDF downloaded.'; } }catch(e){$('status').textContent=e.message || String(e);}}
 document.addEventListener('DOMContentLoaded',()=>{
   initUiTheme();
   buildEngineerOptions(); renderPartsEditor(); renderElectricalEditor();
+  goWizardStep(0);
   document.querySelectorAll('input,select,textarea').forEach(el=>{ el.addEventListener('input', updateReport); el.addEventListener('change', updateReport); });
   updateReport();
 });
