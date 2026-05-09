@@ -38,18 +38,18 @@ input:focus,select:focus,textarea:focus{border-color:#f59e0b;box-shadow:0 0 0 3p
 
 .report-page{position:relative;width:1414px;height:2000px;background:#fff;overflow:hidden;transform-origin:top left}
 .report-page img.template{position:absolute;inset:0;width:1414px;height:2000px;display:block}
-.out{position:absolute;font-family:Arial,sans-serif;font-weight:700;color:#102033;font-size:22px;line-height:1.05;white-space:nowrap;overflow:hidden;text-align:left}
+.out{position:absolute;font-family:Arial,sans-serif;font-weight:400;color:#111;font-size:19px;line-height:1.05;white-space:nowrap;overflow:hidden;text-align:left}
 .out.center{text-align:center}
 .cover{position:absolute;background:#fff;z-index:3}
 .out,.dynamic-table,.sig-wrap,.remarks-text{z-index:4}
 .frac-small{font-size:.55em;vertical-align:.20em;display:inline-block;line-height:.70}
 .frac-small sup{font-size:.72em;vertical-align:.48em}
 .frac-small sub{font-size:.72em;vertical-align:-.14em}
-.dynamic-table{position:absolute;border-collapse:collapse;table-layout:fixed;font-family:Arial,sans-serif;color:#102033;font-weight:700;background:#fff}
-.dynamic-table td{border:1.6px solid #111;padding:2px 4px;vertical-align:middle;text-align:center;line-height:1.05;overflow:hidden;white-space:nowrap}
-.remarks-text{position:absolute;font-family:Arial,sans-serif;font-weight:700;color:#102033;white-space:pre-wrap;overflow:hidden;line-height:1.1}
-.sig-wrap{position:absolute;display:flex;align-items:center;gap:12px;overflow:hidden;font-family:Arial,sans-serif;font-weight:700;color:#102033}
-.sig-wrap img{display:none;max-height:32px;max-width:170px;object-fit:contain}
+.dynamic-table{position:absolute;border-collapse:collapse;table-layout:fixed;font-family:Arial,sans-serif;color:#111;font-weight:400;background:#fff;font-size:19px}
+.dynamic-table td{border:1.6px solid #111;padding:2px 4px;vertical-align:middle;text-align:center;line-height:1.05;overflow:hidden;white-space:nowrap;font-weight:400}
+.remarks-text{position:absolute;font-family:Arial,sans-serif;font-weight:400;color:#111;white-space:pre-wrap;overflow:hidden;line-height:1.08}
+.sig-wrap{position:absolute;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:2px;overflow:visible;font-family:Arial,sans-serif;font-weight:400;color:#111;font-size:19px;line-height:1.05}
+.sig-wrap img{display:none;max-height:58px;max-width:260px;object-fit:contain;margin-top:2px}
 @media(max-width:850px){.grid,.grid2,.item-grid,.elec-grid{grid-template-columns:1fr}.app{padding:10px}}
 @media print{body{background:#fff}.panel,.input-panel{display:none!important}.app{padding:0}.preview-wrap{border:0;padding:0;overflow:hidden}.report-page{transform:none!important}}
 
@@ -141,7 +141,7 @@ body.ir-dark .wizard-controls{border-top-color:#334155}
 }
 .report-page,
 .report-page *{
-  color:#102033 !important;
+  color:#111 !important;
 }
 .report-page{
   background:#fff !important;
@@ -157,13 +157,13 @@ body.ir-dark .wizard-controls{border-top-color:#334155}
 .report-page .dynamic-table,
 .report-page .dynamic-table td{
   background:#fff !important;
-  color:#102033 !important;
+  color:#111 !important;
   border-color:#111 !important;
 }
 .report-page .out,
 .report-page .remarks-text,
 .report-page .sig-wrap{
-  color:#102033 !important;
+  color:#111 !important;
 }
 /* Dark mode is for input UI only. It must never affect the hidden PDF template. */
 body.ir-dark .report-page,
@@ -173,7 +173,7 @@ body.ir-dark .dynamic-table td,
 body.ir-dark .out,
 body.ir-dark .remarks-text,
 body.ir-dark .sig-wrap{
-  color:#102033 !important;
+  color:#111 !important;
   background-color:transparent;
 }
 body.ir-dark .report-page .cover,
@@ -209,7 +209,7 @@ body.ir-dark .report-page,
 body.ir-dark .report-page *,
 .report-page,
 .report-page *{
-  color:#102033 !important;
+  color:#111 !important;
 }
 body.ir-dark .report-page,
 .report-page{
@@ -222,11 +222,27 @@ body.ir-dark .report-page .dynamic-table,
 body.ir-dark .report-page .dynamic-table td,
 .report-page .dynamic-table td{
   background:#fff !important;
-  color:#102033 !important;
+  color:#111 !important;
   border-color:#111 !important;
 }
 /* ===== end V6 hard fix ===== */
 
+
+/* ===== V8 PDF VALUE PLACEMENT + LIGHT TEXT FIX ===== */
+.report-page .out,
+.report-page .remarks-text,
+.report-page .sig-wrap,
+.report-page .dynamic-table,
+.report-page .dynamic-table td{
+  color:#111 !important;
+  font-family:Arial, sans-serif !important;
+  font-weight:400 !important;
+}
+.report-page .out{font-size:19px !important;}
+.report-page .dynamic-table{font-size:19px !important;}
+.report-page .dynamic-table td{font-weight:400 !important;}
+.report-page .sig-wrap img{max-height:58px !important;max-width:260px !important;}
+/* ===== end V8 fix ===== */
 </style>
 </head>
 <body>
@@ -283,7 +299,6 @@ body.ir-dark .report-page .dynamic-table td,
     <div class="section wizard-step" data-step="2"><h2>3) Cable <span class="ar">/ الكيبل</span></h2>
       <div class="grid">
         <div class="field"><label>MLE Size (AWG) / مقاس MLE</label><select id="mleSizeInput"><option value=""></option><option>4</option><option>5</option><option>6</option></select><div class="ar-tip">اختياري من القائمة.</div></div>
-        <div class="field"><label>MLE Flat / شكل MLE</label><select id="mleFlatInput"><option value=""></option><option>Flat</option></select><div class="ar-tip">اختياري؛ المتاح Flat فقط.</div></div>
         <div class="field"><label>Main Cable Size (AWG) / مقاس الكيبل الرئيسي</label><select id="mainSizeInput"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select><div class="ar-tip">اختياري من القائمة.</div></div>
         <div class="field"><label>Main Cable Length (Ft) / طول الكيبل الرئيسي</label><input id="mainLengthInput" type="number" inputmode="decimal" placeholder="Example: 120"><div class="ar-tip">اكتب الرقم فقط.</div></div>
         <div class="field"><label>Main Cable Reused / حالة الكيبل الرئيسي</label><select id="mainReusedInput"><option value=""></option><option>Used</option><option>New</option></select><div class="ar-tip">اختياري: Used أو New.</div></div>
@@ -338,17 +353,17 @@ body.ir-dark .report-page .dynamic-table td,
       <div class="cover" style="left:55px;top:1429px;width:1303px;height:34px;border:1.5px solid #111"></div>
 
       <!-- Basic information -->
-      <div id="outCustomer" class="out" style="left:172px;top:266px;width:300px;height:26px"></div>
-      <div id="outCountry" class="out" style="left:590px;top:266px;width:330px;height:26px"></div>
-      <div id="outReportDate" class="out" style="left:1002px;top:266px;width:330px;height:26px"></div>
-      <div id="outCompanyMan" class="out" style="left:222px;top:300px;width:260px;height:26px"></div>
-      <div id="outEspSupervisorTop" class="out" style="left:675px;top:300px;width:250px;height:26px"></div>
+      <div id="outCustomer" class="out" style="left:270px;top:268px;width:250px;height:24px"></div>
+      <div id="outCountry" class="out" style="left:760px;top:268px;width:180px;height:24px"></div>
+      <div id="outReportDate" class="out" style="left:1110px;top:268px;width:220px;height:24px"></div>
+      <div id="outCompanyMan" class="out" style="left:320px;top:302px;width:210px;height:24px"></div>
+      <div id="outEspSupervisorTop" class="out" style="left:805px;top:302px;width:170px;height:24px"></div>
       <div id="outHoistLabel" class="out" style="left:944px;top:300px;width:75px;height:26px">Hoist:</div>
-      <div id="outHoistRig" class="out" style="left:1020px;top:300px;width:120px;height:26px"></div>
-      <div id="outWell" class="out" style="left:1188px;top:300px;width:165px;height:26px"></div>
-      <div id="outArrive" class="out" style="left:225px;top:333px;width:250px;height:26px"></div>
-      <div id="outJobStart" class="out" style="left:600px;top:333px;width:250px;height:26px"></div>
-      <div id="outJobEnd" class="out" style="left:990px;top:333px;width:250px;height:26px"></div>
+      <div id="outHoistRig" class="out" style="left:1042px;top:302px;width:95px;height:24px"></div>
+      <div id="outWell" class="out" style="left:1242px;top:302px;width:110px;height:24px"></div>
+      <div id="outArrive" class="out" style="left:355px;top:335px;width:190px;height:24px"></div>
+      <div id="outJobStart" class="out" style="left:760px;top:335px;width:180px;height:24px"></div>
+      <div id="outJobEnd" class="out" style="left:1135px;top:335px;width:180px;height:24px"></div>
 
       <!-- Dynamic BIW part table body -->
       <div class="cover" style="left:56px;top:405px;width:1303px;height:134px"></div>
@@ -369,8 +384,8 @@ body.ir-dark .report-page .dynamic-table td,
       <div id="electricalOutputs"></div>
 
       <!-- Bonnet Pressure Test fixed values -->
-      <div id="outPressure" class="out" style="left:525px;top:1035px;width:130px;height:26px">3000</div>
-      <div id="outPressureTime" class="out" style="left:1045px;top:1035px;width:150px;height:26px">30 min</div>
+      <div id="outPressure" class="out" style="left:650px;top:1037px;width:100px;height:24px">3000</div>
+      <div id="outPressureTime" class="out" style="left:1180px;top:1037px;width:110px;height:24px">30 min</div>
 
       <!-- Well / ESP -->
       <div id="outCasing" class="out center" style="left:320px;top:1178px;width:150px;height:28px"></div>
@@ -385,8 +400,8 @@ body.ir-dark .report-page .dynamic-table td,
 
       <!-- Remarks and signatures -->
       <div id="outRemarks" class="remarks-text" style="left:78px;top:1514px;width:1245px;height:150px;font-size:22px"></div>
-      <div id="outFieldEngineer" class="sig-wrap" style="left:265px;top:1677px;width:350px;height:32px"><span id="outFieldEngineerName"></span><img id="outFieldEngineerSign" alt="" style="display:none"></div>
-      <div id="outEspSupervisorBottom" class="out" style="left:820px;top:1683px;width:300px;height:26px"></div>
+      <div id="outFieldEngineer" class="sig-wrap" style="left:275px;top:1679px;width:360px;height:100px"><span id="outFieldEngineerName"></span><img id="outFieldEngineerSign" alt="" style="display:none"></div>
+      <div id="outEspSupervisorBottom" class="out" style="left:820px;top:1685px;width:300px;height:24px"></div>
     </div>
   </div>
 </div>
@@ -467,7 +482,7 @@ function renderPartsEditor(){
         <div class="field"><label>Mfg Date / تاريخ التصنيع</label><input type="date" value="${esc(r.mfg)}" onchange="updatePart(${i},'mfg',this.value)"><div class="ar-tip">اختياري.</div></div>
         <div class="field"><label>Install Date * / تاريخ التركيب</label><input type="date" value="${esc(r.install)}" onchange="updatePart(${i},'install',this.value)"><div class="ar-tip">إجباري لكل Part Number.</div></div>
         <div class="field"><label>Pull Date / تاريخ السحب</label><input type="date" value="${esc(r.pull)}" onchange="updatePart(${i},'pull',this.value)"><div class="ar-tip">اختياري.</div></div>
-        <div class="field"><label>Reused / الحالة</label><select onchange="updatePart(${i},'reused',this.value)"><option value=""></option><option ${r.reused==='Yes'?'selected':''}>Yes</option><option ${r.reused==='No'?'selected':''}>No</option><option ${r.reused==='Y'?'selected':''}>Y</option><option ${r.reused==='N'?'selected':''}>N</option></select><div class="ar-tip">اكتب Y/Yes أو N/No؛ PDF يظهر Yes أو No فقط.</div></div>
+        <div class="field"><label>Reused / الحالة</label><select onchange="updatePart(${i},'reused',this.value)"><option value=""></option><option ${normalizeYesNo(r.reused)==='Yes'?'selected':''}>Yes</option><option ${normalizeYesNo(r.reused)==='No'?'selected':''}>No</option></select><div class="ar-tip">اختر Yes أو No فقط؛ PDF يظهر Yes أو No.</div></div>
       </div>
     </div>`;
   }).join('');
@@ -534,7 +549,7 @@ function updateReport(){
   $('outJobEnd').textContent = formatDate($('jobEndInput').value);
   renderPartsTable();
   $('outMleSize').textContent = $('mleSizeInput').value;
-  $('outMleFlat').textContent = $('mleFlatInput').value;
+  $('outMleFlat').textContent = 'Flat';
   $('outMainSize').textContent = $('mainSizeInput').value;
   $('outMainLength').textContent = toEnglishDigits($('mainLengthInput').value).trim();
   $('outMainReused').textContent = $('mainReusedInput').value;
